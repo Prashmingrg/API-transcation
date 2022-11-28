@@ -38,4 +38,4 @@ User API will use the following path `{rooturl}/api/v1/transaction`. This api wi
 | 1.  | `/`  | GET    | true       | allow user to fetch their own transaction only                                                                     |
 | 2.  | `/`  | Post   | true       | allow user to post their new transaction, data should be send as `{}`                                              |
 | 3.  | `/`  | Patch  | true       | allow user to their own transaction only                                                                           |
-| 4.  | `/`  | DELETE | true       | allow user to delete single or multiple of their own transcation only. clined should send the data as `{id1, id2}` |
+| 4.  | `/`  | DELETE | true       | allow user to delete single or multiple of their own transcation only. clined should send the data as `[id1, id2]` |
