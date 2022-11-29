@@ -22,12 +22,14 @@ app.use("/api/v1/user", userRouter);
 
 app.use("*", (req, res) => {
   res.json({
+    status: "error",
     message: "you are in wron place",
   });
 });
 
 //global error handler
 app.use((error, req, res, next) => {
+  console.log(error);
   const code = error.code || 500;
   res.status(code).json({
     status: "error",

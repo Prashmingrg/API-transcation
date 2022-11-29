@@ -22,9 +22,10 @@ router.post("/", async (req, res, next) => {
       message: "Unable to create the user. Please try again!",
     });
   } catch (error) {
-    console.log(error.message);
+    error.code = 500;
 
     if (error.message.includes("E11000 duplicate key error collection")) {
+      error.code = 200;
       error.message =
         "There is aleray another user exist with the same email, Pelase rest passowrd to use or use different email to register";
     }
