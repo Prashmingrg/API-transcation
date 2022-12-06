@@ -16,15 +16,22 @@ app.use(express.json()); //convert income data in the req.body
 import { connectDB } from "./src/config/dbConfig.js";
 connectDB();
 
-//routers
+//ROUTERS
+import transRouter from "./src/routers/transRouter.js";
 import userRouter from "./src/routers/userRouter.js";
+import { isAuth } from "./src/middleware/authMiddleware.js";
+
 app.use("/api/v1/user", userRouter);
 
-app.use("*", (req, res) => {
-  res.json({
-    status: "error",
-    message: "you are in wron place",
-  });
+app.use("/api/v1/transaction", isAuth, transRouter);
+
+app.use("*", (req, res, next) => {
+  const error = {
+    message: "404 page not found",
+    code: 200,
+  };
+
+  next(error);
 });
 
 //global error handler

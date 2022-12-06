@@ -1,5 +1,5 @@
 import express from "express";
-import { insertUser } from "../models/user/UserModel.js";
+import { findAUser, insertUser } from "../models/user/UserModel.js";
 const router = express.Router();
 
 // create user router
@@ -29,6 +29,31 @@ router.post("/", async (req, res, next) => {
       error.message =
         "There is aleray another user exist with the same email, Pelase rest passowrd to use or use different email to register";
     }
+    next(error);
+  }
+});
+
+router.post("/login", async (req, res, next) => {
+  try {
+    console.log(req.body);
+
+    const user = await findAUser(req.body);
+    console.log(user);
+
+    user?._id
+      ? res.json({
+          status: "success",
+          message: "Login Succesfully",
+          user: {
+            name: user.name,
+            _id: user._id,
+          },
+        })
+      : res.json({
+          status: "error",
+          message: "Error! Invalid login details.",
+        });
+  } catch (error) {
     next(error);
   }
 });
