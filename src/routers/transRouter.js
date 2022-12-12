@@ -1,30 +1,33 @@
 import express from "express";
+import { isAuth } from "../middleware/authMiddleware.js";
 import {
-  getAllUserTransaction,
+  deleteManyTrans,
+  getAllUserTransactions,
   insertTrans,
-} from "../models/trasactioin/TransactionModel.js";
-
+} from "../models/transaction/TransactionModel.js";
 const router = express();
 
-export default router;
-
-//
+// read
 router.get("/", async (req, res, next) => {
   try {
     const { authorization } = req.headers;
-    const trans = await getAllUserTransaction({ userId: authorization });
+
+    const trans = await getAllUserTransactions({ userId: authorization });
     res.json({
       status: "success",
-      message: "get message succes",
+      message: "get method to do ",
       trans,
     });
   } catch (error) {
     next(error);
+    // res.json({
+    //     status: 'error',
+    //     message: error.message
+    // })
   }
 });
 
-//POST METHODS
-
+// create
 router.post("/", async (req, res, next) => {
   try {
     const { authorization } = req.headers;
@@ -44,14 +47,26 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-//DELETE
-router.delete("/", (req, res, next) => {
+// delete
+router.delete("/", async (req, res, next) => {
   try {
-    res.json({
-      status: "success",
-      message: "delete message succes",
-    });
+    console.log(req.body);
+    const { authorization } = req.headers;
+
+    const result = await deleteManyTrans(req.body, authorization);
+    console.log(result);
+    result?.deletedCount
+      ? res.json({
+          status: "success",
+          message: result.deletedCount + " item(s) delted ",
+        })
+      : res.json({
+          status: "error",
+          message: "Nothing happened",
+        });
   } catch (error) {
     next(error);
   }
 });
+
+export default router;
