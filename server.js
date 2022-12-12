@@ -19,11 +19,9 @@ connectDB();
 //ROUTERS
 import transRouter from "./src/routers/transRouter.js";
 import userRouter from "./src/routers/userRouter.js";
-import { isAuth } from "./src/middleware/authMiddleware.js";
 
 app.use("/api/v1/user", userRouter);
-
-app.use("/api/v1/transaction", isAuth, transRouter);
+app.use("/api/v1/transaction", transRouter);
 
 app.use("*", (req, res, next) => {
   const error = {
